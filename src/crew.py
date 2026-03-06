@@ -10,6 +10,7 @@ llm = LLM(
     model="gemini/gemini-1.5-flash",
     api_key=os.getenv("GOOGLE_API_KEY"),
 )
+
 def run_crew(transcript: str, glossary: str):
     if not transcript or not glossary:
         raise ValueError("Заполните оба поля: транскрипт и глоссарий")
@@ -35,12 +36,14 @@ def run_crew(transcript: str, glossary: str):
 
     task1 = Task(
         description=f"Разбей текст лекции на блоки:\n{transcript}",
-        agent=transcriber
+        agent=transcriber,
+        expected_output="JSON с логическими блоками текста и ключевыми терминами"
     )
 
     task2 = Task(
         description=f"Переведи текст с использованием глоссария:\n{glossary}",
-        agent=localizer
+        agent=localizer,
+        expected_output="JSON с переведённым текстом каждого блока"
     )
 
     crew = Crew(
