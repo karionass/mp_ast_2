@@ -34,22 +34,19 @@ def run_crew(transcript: str, glossary: str):
     glossary = glossary.strip()
 
     task1 = Task(
-    description=f"Разбей текст лекции на блоки:\n{transcript}",
-    expected_output="Список смысловых блоков лекции",
-    agent=transcriber
-)
+        description=f"Разбей текст лекции на блоки:\n{transcript}",
+        agent=transcriber
+    )
 
     task2 = Task(
-    description=f"Переведи текст с использованием глоссария:\n{glossary}",
-    expected_output="Переведённый текст с использованием терминов из глоссария",
-    agent=localizer
-)
-    
+        description=f"Переведи текст с использованием глоссария:\n{glossary}",
+        agent=localizer
+    )
+
     crew = Crew(
-    agents=[transcriber, localizer],
-    tasks=[task1, task2],
-    verbose=True
-)
+        agents=[transcriber, localizer],
+        tasks=[task1, task2]
+    )
 
     result = crew.kickoff()
     return result
