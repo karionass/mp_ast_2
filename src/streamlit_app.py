@@ -1,5 +1,4 @@
 import streamlit as st
-from crew import crew
 
 st.set_page_config(page_title="Локализация контента", layout="wide")
 st.title("Локализация и адаптация учебного видеоконтента")
