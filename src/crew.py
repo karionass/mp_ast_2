@@ -7,8 +7,7 @@ load_dotenv()
 os.getenv("GOOGLE_API_KEY")
 
 llm = LLM(
-    model="gemini-3-flash-preview",
-    provider="google",
+    model="gemini/gemini-1.5-flash",
     api_key=os.getenv("GOOGLE_API_KEY"),
 )
 
@@ -16,7 +15,7 @@ def run_crew(transcript, glossary):
 
     transcriber = Agent(
         role="Lecture Analyzer",
-        goal="Разбить транскрипт лекции на смысловые блоки",
+        goal="Разбить транскрипт лекции на блоки по смыслу",
         backstory="Специалист по анализу учебного контента",
         llm=llm
     )
@@ -30,7 +29,7 @@ def run_crew(transcript, glossary):
 
     task1 = Task(
         description=f"""
-        Разбей следующий транскрипт лекции на смысловые блоки:
+        Разбей следующий транскрипт лекции на блоки по смыслу:
 
         {transcript}
         """,
