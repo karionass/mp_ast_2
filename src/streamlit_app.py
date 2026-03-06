@@ -1,6 +1,5 @@
-# src/streamlit_app.py
 import streamlit as st
-from crew import run_crew  # функция из crew.py
+from crew import run_crew
 
 st.set_page_config(page_title="Локализация контента", layout="wide")
 st.title("Локализация и адаптация учебного видеоконтента")

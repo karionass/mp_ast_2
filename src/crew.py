@@ -10,42 +10,34 @@ llm = LLM(
     model="gemini/gemini-1.5-flash",
     api_key=os.getenv("GOOGLE_API_KEY"),
 )
-
-def run_crew(transcript, glossary):
+def run_crew(transcript: str, glossary: str):
+    if not transcript or not glossary:
+        raise ValueError("Заполните оба поля: транскрипт и глоссарий")
 
     transcriber = Agent(
         role="Lecture Analyzer",
-        goal="Разбить транскрипт лекции на блоки по смыслу",
-        backstory="Специалист по анализу учебного контента",
+        goal="Разбить лекцию на блоки",
+        backstory="Специалист по обработке текста",
         llm=llm
     )
 
     localizer = Agent(
         role="Content Localizer",
-        goal="Перевести лекцию и применить глоссарий терминов",
-        backstory="Эксперт по локализации образовательного контента",
+        goal="Перевести лекцию с глоссарием",
+        backstory="Лингвист",
         llm=llm
     )
 
-    task1 = Task(
-        description=f"""
-        Разбей следующий транскрипт лекции на блоки по смыслу:
+    transcript = transcript.strip()
+    glossary = glossary.strip()
 
-        {transcript}
-        """,
+    task1 = Task(
+        description=f"Разбей текст лекции на блоки:\n{transcript}",
         agent=transcriber
     )
 
     task2 = Task(
-        description=f"""
-        Используя глоссарий:
-
-        {glossary}
-
-        Переведи и адаптируй текст лекции:
-
-        {transcript}
-        """,
+        description=f"Переведи текст с использованием глоссария:\n{glossary}",
         agent=localizer
     )
 
