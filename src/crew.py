@@ -13,19 +13,19 @@ llm = LLM(
 
 def run_crew(transcript: str, glossary: str):
     if not transcript or not glossary:
-        raise ValueError("Заполните оба поля: транскрипт и глоссарий")
+        raise ValueError("Заполните транскрипт и глоссарий")
 
     llm = LLM(model="gemini/gemini-1.5-flash", api_key=os.getenv("GOOGLE_API_KEY"))
 
     transcriber = Agent(
-        role="Lecture Analyzer",
+        role="Анализатор текста",
         goal="Разбить лекцию на блоки",
         backstory="Специалист по обработке текста",
         llm=llm
     )
 
     localizer = Agent(
-        role="Content Localizer",
+        role="Локализатор контента",
         goal="Перевести лекцию с глоссарием",
         backstory="Лингвист",
         llm=llm
@@ -36,12 +36,14 @@ def run_crew(transcript: str, glossary: str):
 
     task1 = Task(
         description=f"Разбей текст лекции на блоки:\n{transcript}",
-        agent=transcriber
+        agent=transcriber,
+        expected_output="Текст лекции разделен на логические блоки"
     )
 
     task2 = Task(
         description=f"Переведи текст с использованием глоссария:\n{glossary}",
-        agent=localizer
+        agent=localizer,
+        expected_output="Переведенный текст с использованием глоссария"
     )
 
     crew = Crew(

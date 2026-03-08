@@ -40,9 +40,9 @@ if st.button("Запуск"):
     if not transcript or not glossary:
         st.warning("Пожалуйста, загрузите файлы или введите текст вручную!")
     else:
-        with st.spinner("Анализ и локализация..."):
+        with st.spinner("Анализ и локализация"):
             results = run_crew(transcript, glossary)
 
-        st.subheader("Результат локализации")
+        st.subheader("Результат")
         for i, block in enumerate(results, 1):
             st.markdown(f"**Блок {i}**: {block.get('translated_text', block)}")
