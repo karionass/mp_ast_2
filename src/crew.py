@@ -1,6 +1,6 @@
 from crewai import Crew
-from .agents import load_agents
-from .tasks import load_tasks
+from agents import load_agents
+from tasks import load_tasks
 
 
 def run_crew(transcript, glossary):
