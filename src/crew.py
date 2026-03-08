@@ -36,14 +36,12 @@ def run_crew(transcript: str, glossary: str):
 
     task1 = Task(
         description=f"Разбей текст лекции на блоки:\n{transcript}",
-        agent=transcriber,
-        expected_output="Текст лекции разделен на логические блоки"
+        agent=transcriber
     )
 
     task2 = Task(
         description=f"Переведи текст с использованием глоссария:\n{glossary}",
-        agent=localizer,
-        expected_output="Переведенный текст с использованием глоссария"
+        agent=localizer
     )
 
     crew = Crew(
