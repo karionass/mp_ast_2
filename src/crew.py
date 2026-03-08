@@ -1,53 +1,23 @@
-from crewai import Agent, Task, Crew
-import os
-from dotenv import load_dotenv
-from crewai import LLM, Agent
+from crewai import Crew
+from .agents import load_agents
+from .tasks import load_tasks
 
-load_dotenv()
-os.getenv("GOOGLE_API_KEY")
 
-llm = LLM(
-    model="gemini/gemini-1.5-flash",
-    api_key=os.getenv("GOOGLE_API_KEY"),
-)
+def run_crew(transcript, glossary):
 
-def run_crew(transcript: str, glossary: str):
-    if not transcript or not glossary:
-        raise ValueError("Заполните транскрипт и глоссарий")
+    agents = load_agents()
+    tasks = load_tasks(agents)
 
-    llm = LLM(model="gemini/gemini-1.5-flash", api_key=os.getenv("GOOGLE_API_KEY"))
-
-    transcriber = Agent(
-        role="Анализатор текста",
-        goal="Разбить лекцию на блоки",
-        backstory="Специалист по обработке текста",
-        llm=llm
-    )
-
-    localizer = Agent(
-        role="Локализатор контента",
-        goal="Перевести лекцию с глоссарием",
-        backstory="Лингвист",
-        llm=llm
-    )
-
-    transcript = transcript.strip()
-    glossary = glossary.strip()
-
-    task1 = Task(
-        description=f"Разбей текст лекции на блоки:\n{transcript}",
-        agent=transcriber
-    )
-
-    task2 = Task(
-        description=f"Переведи текст с использованием глоссария:\n{glossary}",
-        agent=localizer
-    )
+    # подставляем данные
+    tasks[0].description = tasks[0].description.format(transcript=transcript)
+    tasks[1].description = tasks[1].description.format(glossary=glossary)
 
     crew = Crew(
-        agents=[transcriber, localizer],
-        tasks=[task1, task2]
+        agents=list(agents.values()),
+        tasks=tasks,
+        verbose=True
     )
 
     result = crew.kickoff()
+
     return result

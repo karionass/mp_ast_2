@@ -1,0 +1,19 @@
+split_lecture:
+  description: |
+    Разбей текст лекции на логические блоки:
+
+    {transcript}
+
+  agent: transcriber
+  expected_output: "Список блоков лекции"
+
+create_glossary:
+  description: |
+    Используя глоссарий:
+
+    {glossary}
+
+    объясни термины простым языком
+
+  agent: glossary_builder
+  expected_output: "Понятный глоссарий"

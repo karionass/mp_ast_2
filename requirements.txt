@@ -4,3 +4,4 @@ crewai-tools
 python-dotenv
 litellm
 langchain-google-genai
+pyyaml
